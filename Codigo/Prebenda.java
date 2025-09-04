@@ -10,4 +10,8 @@ public class Prebenda{
     public String toString(){
         return "Nombre: "+this.nombre_pre+"/Valor: "+this.valor+"\n";
     }
+
+    public int getValorPre(){
+        return this.valor;
+    }
 }

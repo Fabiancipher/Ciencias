@@ -9,4 +9,8 @@ public class Bloqueo{
     public String toString(){
         return "Nombre: "+this.nombre+"/Horas: "+this.horas+"\n";
     }
+
+    public int getHoras(){
+        return this.horas;
+    }
 }

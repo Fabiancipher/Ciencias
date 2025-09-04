@@ -9,4 +9,8 @@ public class Politico{
     public String toString(){
         return "Nombre: "+this.nombre+"/Valor: "+this.valorSoborno+"\n";
     }
+
+    public int getValorPoli(){
+        return this.valorSoborno;
+    }
 }

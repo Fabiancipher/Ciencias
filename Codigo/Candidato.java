@@ -8,6 +8,11 @@ public class Candidato{
     private Prebenda prebendas[];
     private Politico politicos[];
     private ActoCorrupcion sobornos[];
+    private int totalMarchas;
+    private int totalBloqueos;      
+    private int totalPrebendas;
+    private int totalPoliticos;
+    private int totalSobornos;
     private Random r;
     public String nombreMarchas[]= {"Marcha1","Marcha2","Marcha3","Marcha4","Marcha5"};
     public String nombreBloqueos[]= {"Bloqueo1","Bloqueo2","Bloqueo3","Bloqueo4","Bloqueo5"};
@@ -35,8 +40,45 @@ public class Candidato{
             sobornos[i] = new ActoCorrupcion(nombreSobornos[r.nextInt(5)],r.nextInt(4000001));
         }
     }
-    /**Regresa una representacion del candidato
-     * 
+
+    public void obtenerTotales(){
+        this.totalMarchas = 0;
+        this.totalBloqueos = 0;
+        this.totalPrebendas = 0;
+        this.totalPoliticos = 0;
+        this.totalSobornos = 0;
+        for(int i=0; i<marchas.length; i++){
+            totalMarchas += marchas[i].getDistancia();
+            totalBloqueos += bloqueos[i].getHoras();
+            totalPrebendas += prebendas[i].getValorPre();
+            totalPoliticos += politicos[i].getValorPoli();
+            totalSobornos += sobornos[i].getValorSobo();
+        }
+    }
+
+    public int getTotalMarchas(){
+        return this.totalMarchas;
+    }
+
+    public int getTotalBloqueos(){
+        return this.totalBloqueos;
+    }
+
+    public int getTotalPrebendas(){
+        return this.totalPrebendas;
+    }
+
+    public int getTotalPoliticos(){
+        return this.totalPoliticos;
+    }
+
+    public int getTotalSobornos(){
+        return this.totalSobornos;
+    }
+
+    /**
+     * Regresa una representacion del candidato
+     *
      */
     @Override
     public String toString(){
@@ -45,6 +87,11 @@ public class Candidato{
                "BLOQUEOS: "+Arrays.toString(this.bloqueos)+"\n"+
                "PREBENDAS: "+Arrays.toString(this.prebendas)+"\n"+
                "POLITICOS: "+Arrays.toString(this.politicos)+"\n"+
-               "SOBORNOS: "+Arrays.toString(this.sobornos)+"\n";
+               "ACTOS DE CORRUPCION: "+Arrays.toString(this.sobornos)+"\n"+
+               "TOTAL DISTANCIA EN MARCHAS: ["+this.totalMarchas+"]\n"+
+               "TOTAL HORAS PERDIDAS EN BLOQUEOS: ["+this.totalBloqueos+"]\n"+
+               "TOTAL VALOR EN PREBENDAS: ["+this.totalPrebendas+"]\n"+
+               "TOTAL VALOR EN SOBORNOS DE POLITICOS: ["+this.totalPoliticos+"]\n"+
+               "TOTAL VALOR EN ACTOS DE CORRUPCION: ["+this.totalSobornos+"]\n";
     }
 }

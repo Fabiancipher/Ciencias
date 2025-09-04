@@ -10,4 +10,8 @@ public class ActoCorrupcion{
     public String toString(){
         return "Nombre: "+this.nombre+"/Valor: "+this.valorCorr+"\n";
     }
+
+    public int getValorSobo(){
+        return this.valorCorr;
+    }
 }

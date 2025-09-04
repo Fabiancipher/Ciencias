@@ -10,4 +10,8 @@ public class Marcha{
     public String toString(){
         return "Nombre: "+this.nombre+"/Distancia: "+this.distancia+"\n";
     }
+
+    public int getDistancia(){
+        return this.distancia;
+    }
 }
