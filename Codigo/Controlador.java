@@ -4,11 +4,15 @@ public class Controlador{
     private Candidato candidatos[];
     private Long comparaciones=(long) 0;
     private Long cambios=(long)0;
+    private String nombres[]= {"Luis","Andres","Daniel","Humberto","Rafael","Augusto"};
+    private String apellidos[]= {"Perez","Rodriguez","Vargas","Cordoba","Acosta","Uribe"};
+    private Random r;
 
     public Controlador(int n, int m){
+        r= new Random();
         candidatos = new Candidato[n];
         for(int i=0; i<n; i++){
-            candidatos[i] = new Candidato(i,m,"Candidato"+i);
+            candidatos[i] = new Candidato(i,m,nombres[r.nextInt(nombres.length)]+" "+apellidos[r.nextInt(apellidos.length)]);
             candidatos[i].rellenarAtributos(m);
             candidatos[i].obtenerTotales();
         }
@@ -24,6 +28,7 @@ public Candidato[] getCandidatos(){
     return this.candidatos;
 }
 
+/**Determina el estado inicial de los datos, utilizando merge para organizar en caso de no dejar la opcion por defecto */
 public void estado(Candidato[] arr, int atributo, int estado){
     switch(estado){
         case 1:
@@ -109,6 +114,7 @@ public void insercion(Candidato[] arr, int atributo) {
         while (j >= 0 && mayorQue(arr[j], key, atributo)) {
             arr[j+1] = arr[j];
             j--;
+            cambios++;
         }
         arr[j+1] = key;
     }
@@ -217,6 +223,7 @@ private void merge(Candidato[] arr, int l, int m, int r, int atributo) {
         } else {
             arr[k] = R[j];
             j++;
+            cambios++;
         }
         k++;
     }

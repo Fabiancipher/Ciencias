@@ -10,17 +10,24 @@ public class Main{
 
             Candidato candidatos[] = c.getCandidatos();
 
+            
             System.out.println("Estado Inicial: \n 1) Invertido \n 2) Casi ordenado \n Cualquier otro numero) Aleatorio \n");
             int estado = sc.nextInt();
-            System.out.println("Atributo Inicial: \n"); mostrarOpciones();
-            int atributoInicial = sc.nextInt();
-            while(atributoInicial<1 && atributoInicial>5){
+            if(estado!=1 && estado!=2){
+                c.estado(candidatos, 1, estado); //Determina si se dejó aleatorio, en cuyo caso llama a la funcion con un valor por defecto
+            }
+
+            else{
+                 System.out.println("Atributo Inicial: \n"); mostrarOpciones();
+                 int atributoInicial = sc.nextInt();
+                 while(atributoInicial<1 && atributoInicial>5){
                     System.out.println("Ingrese un dato valido: \n");
                     atributoInicial = sc.nextInt();
+                 }
+                 c.estado(candidatos, atributoInicial, estado);
             }
-            c.estado(candidatos, atributoInicial, estado);
             while(true){ 
-                System.out.println("1) Mostrar candidatos\n 2) Burbuja\n 3) Seleccion\n 4) Insercion\n 5) Merge \n 6) Quick \n 0) Salir");
+                System.out.println("1) Mostrar candidatos\n 2) Burbuja\n 3) Seleccion\n 4) Insercion\n 5) Merge \n 6) Quick \n 7) Escoger un Candidato \n 0) Salir");
                 int dec = sc.nextInt();
                 switch (dec) {
                     case 1:
@@ -34,7 +41,6 @@ public class Main{
                             algo = sc.nextInt();
                         }
                         c.burbuja(candidatos, algo);
-                        mostrarOrdenados(candidatos);
                         break;
                     case 3:
                         mostrarOpciones();
@@ -44,7 +50,6 @@ public class Main{
                             algo = sc.nextInt();
                         }
                         c.seleccion(candidatos, algo);
-                        mostrarOrdenados(candidatos);
                         break;
                     case 4:
                         mostrarOpciones();
@@ -54,7 +59,6 @@ public class Main{
                             algo = sc.nextInt();
                         }
                         c.insercion(candidatos, algo);
-                        mostrarOrdenados(candidatos);
                         break;
                     case 5:
                         mostrarOpciones();
@@ -64,7 +68,6 @@ public class Main{
                             algo = sc.nextInt();
                         }
                         c.mergeSort(candidatos, algo);
-                        mostrarOrdenados(candidatos);
                         break;
                     case 6:
                         mostrarOpciones();
@@ -74,7 +77,19 @@ public class Main{
                             algo = sc.nextInt();
                         }
                         c.quickSort(candidatos, algo);
-                        mostrarOrdenados(candidatos);
+                        break;
+                    case 7:
+                        System.err.println("Escoger al candidato en base al que menos tenga del atributo espicificado \n");
+                        mostrarOpciones();
+                        algo = sc.nextInt();
+                        while(algo<1 && algo>5){
+                            System.out.println("Ingrese un dato valido: \n");
+                            algo = sc.nextInt();
+                        }
+                        c.quickSort(candidatos, algo);
+                        Candidato ganador = candidatos[0];
+                        System.err.println("El candidato: "+ganador.getNombre()+" fué elegido por ser el \"mejor\" entre todos los candidatos \n");
+                        System.err.println("¡Felicidades!");  
                         break;
                     case 0:
                         System.out.println("Saliendo...");
@@ -90,12 +105,5 @@ public class Main{
     }
     public static void mostrarOpciones(){
         System.err.println("1) Por Distancia \n 2) Por Horas \n 3) Por Prebendas \n 4) Por Politicos \n 5) Por Corrupcion \n");
-    }
-    public static void mostrarOrdenados(Candidato[] candidatos){
-        System.err.println("Candidatos Ordenados: \n");
-        for(Candidato c: candidatos){
-            System.err.println(c);
-            System.err.println("--------------------------------------------------");
-        }
     }
 }

@@ -8,11 +8,11 @@ public class Candidato{
     private Prebenda prebendas[];
     private Politico politicos[];
     private ActoCorrupcion sobornos[];
-    private int totalMarchas;
-    private int totalBloqueos;      
-    private int totalPrebendas;
-    private int totalPoliticos;
-    private int totalSobornos;
+    private long totalMarchas;
+    private long totalBloqueos;      
+    private long totalPrebendas;
+    private long totalPoliticos;
+    private long totalSobornos;
     private Random r;
     public String nombreMarchas[]= {"Marcha1","Marcha2","Marcha3","Marcha4","Marcha5"};
     public String nombreBloqueos[]= {"Bloqueo1","Bloqueo2","Bloqueo3","Bloqueo4","Bloqueo5"};
@@ -33,14 +33,14 @@ public class Candidato{
 
     public void rellenarAtributos(int n){
         for(int i=0; i<n; i++){
-            marchas[i] = new Marcha(nombreMarchas[r.nextInt(5)],r.nextInt(2001));
-            bloqueos[i] = new Bloqueo(nombreBloqueos[r.nextInt(5)],r.nextInt(17));
-            prebendas[i] = new Prebenda(nombrePrebendas[r.nextInt(5)],r.nextInt(4000001));
-            politicos[i] = new Politico(nombrePoliticos[r.nextInt(5)],r.nextInt(4000001));
-            sobornos[i] = new ActoCorrupcion(nombreSobornos[r.nextInt(5)],r.nextInt(4000001));
+            marchas[i] = new Marcha(nombreMarchas[r.nextInt(nombreMarchas.length)],r.nextInt(2001)); //Escoge aleatoriamente de la lista y crea un numero aleatorio
+            bloqueos[i] = new Bloqueo(nombreBloqueos[r.nextInt(nombreBloqueos.length)],r.nextInt(17));
+            prebendas[i] = new Prebenda(nombrePrebendas[r.nextInt(nombrePoliticos.length)],r.nextInt(4000001));
+            politicos[i] = new Politico(nombrePoliticos[r.nextInt(nombrePoliticos.length)],r.nextInt(4000001));
+            sobornos[i] = new ActoCorrupcion(nombreSobornos[r.nextInt(nombreSobornos.length)],r.nextInt(4000001));
         }
     }
-
+    /**Suma todos los valores obtenidosx */
     public void obtenerTotales(){
         this.totalMarchas = 0;
         this.totalBloqueos = 0;
@@ -56,23 +56,27 @@ public class Candidato{
         }
     }
 
-    public int getTotalMarchas(){
+    public String getNombre(){
+        return this.nombre;
+    }
+
+    public long getTotalMarchas(){
         return this.totalMarchas;
     }
 
-    public int getTotalBloqueos(){
+    public long getTotalBloqueos(){
         return this.totalBloqueos;
     }
 
-    public int getTotalPrebendas(){
+    public long getTotalPrebendas(){
         return this.totalPrebendas;
     }
 
-    public int getTotalPoliticos(){
+    public long getTotalPoliticos(){
         return this.totalPoliticos;
     }
 
-    public int getTotalSobornos(){
+    public long getTotalSobornos(){
         return this.totalSobornos;
     }
 
@@ -82,7 +86,8 @@ public class Candidato{
      */
     @Override
     public String toString(){
-        return "Candidato N°: "+this.id+"\n"+"NOMBRE: "+this.nombre+"\n"+
+        if(marchas.length<100){
+             return "Candidato N°: "+this.id+"\n"+"NOMBRE: "+this.nombre+"\n"+
                "MARCHAS: "+Arrays.toString(this.marchas)+"\n"+
                "BLOQUEOS: "+Arrays.toString(this.bloqueos)+"\n"+
                "PREBENDAS: "+Arrays.toString(this.prebendas)+"\n"+
@@ -93,5 +98,15 @@ public class Candidato{
                "TOTAL VALOR EN PREBENDAS: ["+this.totalPrebendas+"]\n"+
                "TOTAL VALOR EN SOBORNOS DE POLITICOS: ["+this.totalPoliticos+"]\n"+
                "TOTAL VALOR EN ACTOS DE CORRUPCION: ["+this.totalSobornos+"]\n";
+        }
+       else{
+               return "Demasiados Eventos, mostrando solo Totales \n"+
+               "Candidato N°: "+this.id+"\n"+"NOMBRE: "+this.nombre+"\n"+
+               "TOTAL DISTANCIA EN MARCHAS: ["+this.totalMarchas+"]\n"+
+               "TOTAL HORAS PERDIDAS EN BLOQUEOS: ["+this.totalBloqueos+"]\n"+
+               "TOTAL VALOR EN PREBENDAS: ["+this.totalPrebendas+"]\n"+
+               "TOTAL VALOR EN SOBORNOS DE POLITICOS: ["+this.totalPoliticos+"]\n"+
+               "TOTAL VALOR EN ACTOS DE CORRUPCION: ["+this.totalSobornos+"]\n";
+       }
     }
 }
