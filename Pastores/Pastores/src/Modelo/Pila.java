@@ -37,7 +37,7 @@ public class Pila<T>{
      * @param dato : El dato a poner encima
      */
     public void push(T dato){
-        NodoDoble<T> nuevo = new NodoDoble<>(dato, null, null);
+        NodoDoble<T> nuevo = new NodoDoble<>(dato, null, null,this.size);
         if(vacia()){
             this.cima = nuevo;
             this.size++;

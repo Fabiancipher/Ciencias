@@ -36,8 +36,8 @@ public class Controlador{
      * @param n : La cantidad de pastores a crear
      */
     public void llenar(int n){
-        for(int i=0; i<=n; i++){
-            this.pastores.agregar(new Pastor(titulos[r.nextInt(titulos.length)]+" "+nombres[r.nextInt(nombres.length)], r.nextInt(2000), r.nextInt(2000), roles[r.nextInt(roles.length)]));
+        for(int i=0; i<n; i++){
+            this.pastores.agregar(new Pastor(titulos[r.nextInt(titulos.length)]+" "+nombres[r.nextInt(nombres.length)], r.nextInt(2000), r.nextInt(2000), roles[r.nextInt(roles.length)], i));
         }
     }
     /**
@@ -52,5 +52,26 @@ public class Controlador{
             }
         }
         return null;
+    }
+    /**
+     * Devuelve 1 o 2.
+     * <p>
+     * Se corresponde con eliminar o regresar al juego a un jugador
+     * @return
+     */
+    public int eleccion(){
+        int eleccion = r.nextInt(3-1)+1;
+        return eleccion;
+    }
+    /**
+     * Devuelve 1, 2 o 3
+     * <p>
+     * Se corresponde con las elecciones que tiene el jugador más pobre, que son las mismas que cualquier otro jugador, 
+     * con la adicion de poder robar 1/3 de los numeros del jugador más rico
+     * @return
+     */
+    public int eleccionPobre(){
+        int eleccion = r.nextInt(4-1)+1;
+        return eleccion;
     }
 }

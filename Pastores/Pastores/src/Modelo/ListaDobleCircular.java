@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Representa una lista circular doblemente enlazada
@@ -52,10 +53,10 @@ public class ListaDobleCircular<T> implements Iterable<T>{
      * @param dato : El dato a buscar
      * @return El nodo encontrado, o null si no se encuentra
      */
-    public NodoDoble<T> buscar(T dato){
+    public NodoDoble<T> buscar(int dato){
         NodoDoble<T> actual = this.cabeza;
         for(int i=0; i<this.size; i++){ //Itera hasta dar una vuelta completa
-            if(Objects.equals(actual.getDato(), dato)){ //Compara los datos
+            if(actual.getId()==dato){ //Compara los datos
                 return actual; //Regresa el nodo
             }
             actual = actual.getSiguiente(); //Avanza
@@ -76,7 +77,7 @@ public class ListaDobleCircular<T> implements Iterable<T>{
      * @param dato : El nuevo dato a añadir a la lista
      */
     private void agregarAlFinal(T dato){
-        NodoDoble<T> nuevo = new NodoDoble<>(dato, this.cola, this.cabeza);
+        NodoDoble<T> nuevo = new NodoDoble<>(dato, this.cola, this.cabeza, this.size);
         if(vacia()){ //Si es la primera insercion, se vuelve tanto la cabeza como la cola
             this.cabeza = nuevo;
             this.cola = nuevo;
@@ -121,6 +122,7 @@ public class ListaDobleCircular<T> implements Iterable<T>{
             this.cola = anterior;
         }
 
+        //aEliminar.setDato(null);
         this.size--;
     }  
 
@@ -130,12 +132,22 @@ public class ListaDobleCircular<T> implements Iterable<T>{
      * Es más facil que pasar un nodo entero
      * @param dato : El valor del nodo a eliminar
      */
-    public void buscarEliminar(T dato){
-        NodoDoble<T> aEliminar = buscar(dato);
-        if(aEliminar==null){
-            return;
+    public boolean buscarEliminar(T dato){
+        if(vacia()||this.size==0){
+            return false;
         }
-        eliminar(aEliminar);
+        NodoDoble<T> aEliminar = this.cabeza;
+        for(int i=0; i<this.size; i++){
+            if(aEliminar==null){
+                return false;
+            }
+            if(Objects.equals(aEliminar.getDato(), dato)){
+                eliminar(aEliminar);
+                return true;
+            }
+            aEliminar = aEliminar.getSiguiente();
+        }
+        return false; 
     }
 
     /**
@@ -243,5 +255,105 @@ public class ListaDobleCircular<T> implements Iterable<T>{
         }
         return min;
         //return Collections.min(this,comp) <- Aplicable si se implementa *todo* collections
+    }
+    /**
+     * Compara un dato con el siguiente en la lista
+     * <p>
+     * Si el dato no se encuentra, regresa false
+     * @param dato : El dato a comparar
+     * @param comp : El comparador que define la comparación
+     * @return True si son iguales, false si no lo son o si no se encuentra el dato
+     */
+    public boolean compararSiguiente(NodoDoble<T> actual, Comparator<T> comp){
+        if(actual==null||actual.getSiguiente()==null){
+            return false; //No se encontró el dato
+        }
+        T dato = actual.getDato();
+        T siguiente = actual.getSiguiente().getDato();
+        return comp.compare(dato, siguiente)==0; //Si el dato es igual al siguiente
+    }
+    /**
+     * Intercambia los datos de un nodo con su siguiente nodo
+     * @param n : La id del nodo
+     */
+    public void intercambiar(int n){
+        NodoDoble<T> nodoEncontrado = buscar(n);
+        NodoDoble<T> nodoSiguiente = nodoEncontrado.getSiguiente();
+        T datoEncontrado = nodoEncontrado.getDato();
+        T datoSiguiente = nodoSiguiente.getDato();
+        nodoEncontrado.setDato(datoSiguiente);
+        nodoSiguiente.setDato(datoEncontrado);
+    }
+    /**
+     * Reordena la lista en base a si el siguiente elemento comparte el mismo dato
+     * @param comp El comparador bajo el que se determina la comparacion
+     */
+    public void reordenar(Comparator<T> comp){
+        if(vacia() || size==1){
+            return; //No hay nada que ordenar
+        }
+        boolean swapped;
+        int peorCaso = this.size*this.size;
+        int iteraciones=0;
+        do{
+            swapped = false;
+            NodoDoble<T> actual = this.cabeza;
+            for(int i=0; i<size-1; i++){ //-1 porque se compara con el siguiente
+                NodoDoble<T> siguiente = actual.getSiguiente();
+                if(comp.compare(actual.getDato(), siguiente.getDato())==0){ //Si el actual igual al siguiente
+                    //Intercambia los datos
+                    T temp = actual.getDato();
+                    actual.setDato(siguiente.getDato());
+                    siguiente.setDato(temp);
+                    swapped = true; //Se hizo un intercambio
+                }
+                actual = actual.getSiguiente(); //Avanza
+            }
+            iteraciones++;
+            if(iteraciones>=peorCaso){
+                System.err.println("Ocurrió el peor caso intercambiando. Rompiendo...");
+                break;
+            }
+        }while(swapped); //Mientras se hayan hecho intercambios, sigue ordenando
+    }
+    /**
+     * Regresa el dato de un nodo aleatorio
+     * <p>
+     * Si el tamaño es 1, inevitablemente escoge la cabeza
+     * @return El dato de uno de los nodos
+     */
+    public T aleatorio(){
+        Random r = new Random();
+        int id = r.nextInt(this.size); //Genera un numero aleatorio de 0 a el tamaño de la lista-1
+        int veces = 0; //Cantidad de veces que se buscó un dato aleatorio
+        NodoDoble<T> actual = this.cabeza; //Toma la cabeza como base
+        for(int i=0; i<this.size; i++){
+            if(veces==id){
+                return actual.getDato(); //Retorna el dato obtenido
+            }
+            actual = actual.getSiguiente(); //Avanza
+            veces++;
+        }
+        return null;
+    }
+    /**
+     * Regresa un nodo aleatorio
+     * <p>
+     * Si el tamaño es 1, inevitablemente escoge la cabeza
+     * @return Un nodo de la lista
+     */
+    public NodoDoble<T> aleatorioNodo(){
+        Random r = new Random();
+        int id = r.nextInt(this.size); //Genera un numero aleatorio de 0 a el tamaño de la lista-1
+        int veces = 0; //Cantidad de veces que se buscó un dato aleatorio
+        NodoDoble<T> actual = this.cabeza; //Toma la cabeza como base
+        for(int i=0; i<this.size; i++){
+            if(veces==id){
+                return actual; //Retorna el nodo obtenido
+            }
+            actual = actual.getSiguiente(); //Avanza
+            veces++;
+        }
+        return null;
     }
 }
