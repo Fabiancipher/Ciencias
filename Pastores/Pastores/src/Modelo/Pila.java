@@ -1,11 +1,13 @@
 package Modelo;
 
-import java.util.NoSuchElementException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
- * Representa una pila de Pastores (Desposeídos).
+ * Representa una pila de datos genericos.
+ * <p>
+ * Usa nodos dobles pero esto es deliberado (por consistencia), podria usar nodos simples
  */
 public class Pila<T>{
     private NodoDoble<T> cima;
@@ -22,6 +24,10 @@ public class Pila<T>{
     
     public boolean vacia(){ return this.size==0; }
 
+    /**
+     * Añade a la pila y se vuelve la nueva cima
+     * @param dato : El dato a asignar al nuevo nodo
+     */
     public void push(T dato){
         // La ID se usa en NodoDoble, pero para la pila no es estrictamente necesaria.
         NodoDoble<T> nuevo = new NodoDoble<>(dato, null, null, this.size); 
@@ -34,6 +40,9 @@ public class Pila<T>{
         this.size++;
     }
     
+    /**
+     * Elimina la cima
+     */
     public void pop(){
         if(vacia()){
             throw new NoSuchElementException("No hay elementos para eliminar");
@@ -44,11 +53,18 @@ public class Pila<T>{
         this.size--;
     }
 
+    /**
+     * Elimina la pila completa
+     */
     public void eliminarPila(){
         this.cima = null;
         this.size = 0;
     }
     
+    /**
+     * Devuelve el dato del elemento en la cima
+     * @return El dato de la cima, o null si la pila está vacia
+     */
     public T peek(){
         return !vacia() ? this.cima.getDato() : null;
     }

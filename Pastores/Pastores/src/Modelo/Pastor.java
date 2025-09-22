@@ -6,6 +6,11 @@ import java.util.Objects;
  * Representa a uno de los jugadores del juego (un Pastor).
  */
 public class Pastor {
+    /**
+     * Un identificador único
+     * <p>
+     * Se corresponde con su posicion al ser añadido (primero, segundo, ...) y con la id de su nodo
+     */
     private final int id;
     private String nombre;
     private int fieles, riquezas;

@@ -3,8 +3,8 @@ package Controlador;
 import Modelo.*;
 import Vista.VistaJuego;
 import java.util.Comparator;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -264,12 +264,21 @@ public class Controlador {
     
     // --- Métodos Getters y Helpers ---
     
+    /**
+     * Genera pastores con datos aleatorios
+     * @param n : La cantidad de pastores a generar
+     */
     public void llenar(int n){
         for(int i=0; i<n; i++){
             this.pastores.agregar(new Pastor(titulos[r.nextInt(titulos.length)]+" "+nombres[r.nextInt(nombres.length)], r.nextInt(1000)+100, r.nextInt(1000)+100, roles[r.nextInt(roles.length)], i));
         }
     }
     
+    /**
+     * Busca un pastor en base a su nombre
+     * @param nombre : El nombre del pastor a buscar
+     * @return El objeto pastor encontrado, o null si no se encontró 
+     */
     public Pastor buscar(String nombre){
         for(Pastor p : this.pastores){
             if(p.getNombre().equalsIgnoreCase(nombre)){
@@ -279,14 +288,26 @@ public class Controlador {
         return null;
     }
     
+    /**
+     * Busca y obtiene al pastor más rico
+     * @return Un pastor, el más rico
+     */
     public Pastor getMasRico(){
         return this.pastores.maximo(Comparator.comparingInt(Pastor::getRiquezas));
     }
     
+    /**
+     * Busca y obtiene al pastor más pobre
+     * @return Un pastor, el más pobre
+     */
     public Pastor getMasPobre(){
         return this.pastores.minimo(Comparator.comparingInt(Pastor::getRiquezas));
     }
-    
+
+    /**
+     * Obtiene los pastores en juego y los añade a una lista
+     * @return Una lista con los pastores en juego
+     */
     public List<Pastor> getPastoresEnMesa() {
         java.util.List<Pastor> lista = new java.util.ArrayList<>();
         for (Pastor p : this.pastores) {
@@ -295,11 +316,23 @@ public class Controlador {
         return lista;
     }
     
+    /**
+     * Obtiene los pastores eliminados y los añade a una lista
+     * @return Una lista con los pastores eliminados
+     */
     public List<Pastor> getPastoresEnPila() {
         return eliminados.getElementos(); 
     }
     
-    // Métodos de elección aleatoria (mantengo tu lógica original)
+    // Métodos de elección aleatoria
+    /**
+     * Devuelve la eleccion del jugador. Se usa cuando el jugador no es el más pobre
+     * @return 1 ó 2
+     */
     public int eleccion(){ return r.nextInt(2)+1; } // 1 o 2
+    /**
+     * Devuelve la eleccion del jugador. Se usa cuando el jugador es el más pobre
+     * @return 1, 2 ó 3
+     */
     public int eleccionPobre(){ return r.nextInt(3)+1; } // 1, 2 o 3
 }
